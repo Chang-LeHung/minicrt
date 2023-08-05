@@ -1,5 +1,5 @@
 
-#include "mincrt.h"
+#include "minicrt.h"
 
 
 size_t strlen(const char *s) {

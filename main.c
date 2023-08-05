@@ -1,5 +1,5 @@
 
-#include "src/mincrt.h"
+#include "src/minicrt.h"
 
 int main(int argc, char** argv, char** envp) {
     puts("Hello World, Awesome\n");

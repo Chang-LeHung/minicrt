@@ -1,5 +1,5 @@
 
-#include "mincrt.h"
+#include "minicrt.h"
 
 static int dummy(int argc, char **argv, char **envp) {
     puts(RED "default main function, please preprae your own main function\n" RESET);

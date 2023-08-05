@@ -1,5 +1,5 @@
 #include <sys/syscall.h>
-#include "mincrt.h"
+#include "minicrt.h"
 
 void _exit(int status) {
     __asm__ __volatile__(

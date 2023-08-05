@@ -1,5 +1,5 @@
 
-#include "mincrt.h"
+#include "minicrt.h"
 
 int putchar(char c) {
     write(STDOUT, &c, 1);

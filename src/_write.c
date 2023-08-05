@@ -1,5 +1,5 @@
 
-#include "mincrt.h"
+#include "minicrt.h"
 
 size_t write(int fd, const char *buffer, size_t len) {
     // be careful with return val type, which is size_t

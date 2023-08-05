@@ -1,5 +1,5 @@
 
-#include "mincrt.h"
+#include "minicrt.h"
 
 typedef struct heap_header {
     enum {
