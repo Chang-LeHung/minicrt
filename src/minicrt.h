@@ -28,7 +28,7 @@ size_t strlen(const char *s);
 
 int puts(const char *s);
 
-char *itoa(u64, char *, int);
+char *itoa(i64, char *, int);
 
 char *strcpy(char *, const char *);
 
@@ -37,6 +37,8 @@ int strcmp(const char *, const char *);
 void free(void *);
 
 void *malloc(size_t);
+
+void strcpy_n(char *, const char *, int);
 
 hidden void *sbrk(u64);
 
@@ -67,4 +69,5 @@ hidden void mini_crt_init_heap();
 #define KB *(1<<10)
 #define MB *(1<<20)
 #define PAGE_SIZE  4 KB
+
 #endif //STATIC_STL_MINICRT_H

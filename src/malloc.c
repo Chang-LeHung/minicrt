@@ -21,9 +21,9 @@ static const int head_size = sizeof(heap_header_t);
 #define IS_FREE(ptr) (ptr->used == 0)
 #define SET_USED(ptr) (ptr->used = 1)
 #define SET_FREE(ptr) (ptr->used = 0)
-#define MIN_SIZE (8)
-#define HEAP_SIZE(ptr) ((ptr->size) & ~(MIN_SIZE - 1))
-#define ROUND_UP(x) (((x) + (MIN_SIZE - 1)) & ~(MIN_SIZE - 1))
+#define ALIGN_TO (16)
+#define HEAP_SIZE(ptr) ((ptr->size) & ~(ALIGN_TO - 1))
+#define ROUND_UP(x) (((x) + (ALIGN_TO - 1)) & ~(ALIGN_TO - 1))
 
 void free(void *ptr) {
     heap_header_t *header = REAL_START_FROM_USER_PTR(ptr);
@@ -82,6 +82,7 @@ void *malloc(size_t size) {
 
 hidden void mini_crt_init_heap() {
     heap_start = (heap_header_t *) sbrk(0);
+    heap_start = (heap_header_t *) ROUND_UP((u64)heap_start);
     base = heap_start;
     end = sbrk((u64) ((char *) base + 4 MB));
 #ifdef TEST

@@ -8,7 +8,7 @@ size_t strlen(const char *s) {
     return i;
 }
 
-char *itoa(u64 n, char *str, int radix) {
+char *itoa(i64 n, char *str, int radix) {
     static char digits[] = "0123456789abcdefghijklmnopqrstuvwxyz";
     char *p = str;
     char *head = str;
@@ -51,4 +51,10 @@ char *strcpy(char *dest, const char *src) {
     }
     *dest = 0;
     return ret;
+}
+
+void strcpy_n(char *dest, const char *src, int size) {
+    for(int i = 0; i < size; i++) {
+        *dest++ = *src++;
+    }
 }
