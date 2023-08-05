@@ -3,3 +3,6 @@
 *.o
 std
 main
+CMakeLists.txt
+*.cpp
+.vscode
