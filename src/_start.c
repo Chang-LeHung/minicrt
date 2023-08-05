@@ -31,6 +31,7 @@ void _start() {
 
 static void minicrt_init(int argc, char **argv, char **envp) {
 //    minicrt_init_stage2(argc, argv, envp);
+    mini_crt_init_heap();
     _exit(main(argc, argv, envp));
 }
 

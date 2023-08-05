@@ -13,7 +13,7 @@ int main(int argc, char** argv, char** envp) {
 //        puts(envp[i]);
 //        putchar('\n');
 //    }
-    char buf[1<<4];
+    char *buf = malloc(1<<10);
     itoa(1<<10, buf, 10);
     buf[4] = '\n';
     buf[5] = '\0';

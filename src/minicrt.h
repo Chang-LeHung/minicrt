@@ -28,13 +28,19 @@ size_t strlen(const char *s);
 
 int puts(const char *s);
 
-char *itoa(int, char *, int);
+char *itoa(u64, char *, int);
 
 char *strcpy(char *, const char *);
 
 int strcmp(const char *, const char *);
 
 void free(void *);
+
+void *malloc(size_t);
+
+hidden void *sbrk(u64);
+
+hidden void mini_crt_init_heap();
 
 #define kernel_destroy_regs "rcx", "r11", "memory"
 #define STDIN 0
@@ -59,5 +65,6 @@ void free(void *);
 #define RESET "\x1b[0m"
 #define NULL 0
 #define KB *(1<<10)
+#define MB *(1<<20)
 #define PAGE_SIZE  4 KB
 #endif //STATIC_STL_MINICRT_H
