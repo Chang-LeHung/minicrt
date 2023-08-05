@@ -2,14 +2,13 @@
 #include "minicrt.h"
 
 static int dummy(int argc, char **argv, char **envp) {
-    puts(RED "default main function, please preprae your own main function\n" RESET);
+    puts(RED "Default main(dummy) function, please preprae your own main function\n" RESET);
     return 0;
 }
 
 weak_alias(dummy, main);
 
 static void minicrt_init(int, char **, char **);
-
 // this is the entry point of the program
 void _start() {
     // push %rbp        rsp will be decreased by 8
