@@ -16,26 +16,31 @@ char *itoa(i64 n, char *str, int radix)
     char *head = str;
     if (!p || radix < 2 || radix > 36) return NULL;
 
-    if (radix != 10 && n < 0) {
+    if (radix != 10 && n < 0)
+    {
         return p;
     }
-    if (n == 0) {
+    if (n == 0)
+    {
         *p++ = '0';
         *p = '\0';
         return p;
     }
-    if (n < 0) {
+    if (n < 0)
+    {
         n = -n;
         *p++ = '-';
         head++;
     }
-    while (n) {
+    while (n)
+    {
         int rem = n % radix;
         *p++ = digits[rem];
         n /= radix;
     }
     *p = '\0';
-    for (--p; head < p; ++head, --p) {
+    for (--p; head < p; ++head, --p)
+    {
         char tmp = *head;
         *head = *p;
         *p = tmp;
@@ -45,7 +50,8 @@ char *itoa(i64 n, char *str, int radix)
 
 int strcmp(const char *s1, const char *s2)
 {
-    while (*s1 && *s1 == *s2) {
+    while (*s1 && *s1 == *s2)
+    {
         s1++;
         s2++;
     }
@@ -55,7 +61,8 @@ int strcmp(const char *s1, const char *s2)
 char *strcpy(char *dest, const char *src)
 {
     char *ret = dest;
-    while (*src) {
+    while (*src)
+    {
         *dest++ = *src++;
     }
     *dest = 0;
@@ -65,7 +72,8 @@ char *strcpy(char *dest, const char *src)
 int strcpy_n(char *dest, const char *src, int size)
 {
     int ret = 0;
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < size; i++)
+    {
         if (*dest == '\n')
             ret = 1;
         *dest++ = *src++;

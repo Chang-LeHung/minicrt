@@ -64,7 +64,8 @@ hidden void minicrt_destroy_io()
 static inline int _fwrite(FILE *stream)
 {
     int ret = write((int) stream->fd, stream->buf, stream->pos);
-    if (ret >= 0) {
+    if (ret >= 0)
+    {
         stream->pos = 0;
         return ret;
     }
@@ -76,11 +77,14 @@ int fwrite(const void *buf, int size, FILE *stream)
     if (!CAN_WRITE(stream) || !IS_OPEN(stream)) return -1;
     if (size <= 0) return 0;
     u32 i = size + stream->pos;
-    if (i > stream->size) {
+    if (i > stream->size)
+    {
         _fwrite(stream);
         write((int) stream->fd, buf, size);
-    } else {
-        if (strcpy_n(stream->buf + stream->pos, buf, size)) {
+    } else
+    {
+        if (strcpy_n(stream->buf + stream->pos, buf, size))
+        {
             write((int) stream->fd, buf, size + stream->pos);
             stream->pos = 0;
         } else
@@ -123,7 +127,8 @@ void reverseString(char str[], int length)
 {
     int start = 0;
     int end = length - 1;
-    while (start < end) {
+    while (start < end)
+    {
         char temp = str[start];
         str[start] = str[end];
         str[end] = temp;
@@ -138,19 +143,22 @@ static int int_to_string(long num, char str[], int precision)
     int isNegative = 0;
 
     // Handle negative numbers
-    if (num < 0) {
+    if (num < 0)
+    {
         isNegative = 1;
         num = -num;
     }
 
     // Convert integer part to string
-    while (num != 0) {
+    while (num != 0)
+    {
         str[index++] = num % 10 + '0';
         num /= 10;
     }
 
     // Add a negative sign if necessary
-    if (isNegative) {
+    if (isNegative)
+    {
         str[index++] = '-';
     }
 
@@ -163,7 +171,8 @@ static int int_to_string(long num, char str[], int precision)
 static void float_to_string(float num, char str[], int precision)
 {
     // Handle 0.0 case
-    if (num == 0) {
+    if (num == 0)
+    {
         str[0] = '0';
         str[1] = '\0';
         return;
@@ -183,16 +192,20 @@ static void float_to_string(float num, char str[], int precision)
 
     // Convert the decimal part to a string
     int i = 0;
-    if (precision == -1) {
-        while (1) {
+    if (precision == -1)
+    {
+        while (1)
+        {
             decimalPart *= 10;
             int digit = (int) decimalPart;
             str[integerLength + i++] = digit + '0';
             if (!digit) break;
             decimalPart -= digit;
         }
-    } else {
-        while (i < precision) {
+    } else
+    {
+        while (i < precision)
+        {
             decimalPart *= 10;
             int digit = (int) decimalPart;
             str[integerLength + i++] = digit + '0';
@@ -206,7 +219,8 @@ static void float_to_string(float num, char str[], int precision)
 static void double_to_string(double num, char str[], int precision)
 {
     // Handle 0.0 case
-    if (num == 0) {
+    if (num == 0)
+    {
         str[0] = '0';
         str[1] = '\0';
         return;
@@ -226,16 +240,20 @@ static void double_to_string(double num, char str[], int precision)
 
     // Convert the decimal part to a string
     int i = 0;
-    if (precision == -1) {
-        while (1) {
+    if (precision == -1)
+    {
+        while (1)
+        {
             decimalPart *= 10;
             int digit = (int) decimalPart;
             str[integerLength + i++] = digit + '0';
             if (!digit) break;
             decimalPart -= digit;
         }
-    } else {
-        while (i < precision) {
+    } else
+    {
+        while (i < precision)
+        {
             decimalPart *= 10;
             int digit = (int) decimalPart;
             str[integerLength + i++] = digit + '0';
@@ -252,12 +270,16 @@ int vprintf(FILE *file, const char *format, va_list args)
     char from_l = 0;
     int ret = 0;
     const char *p = NULL;
-    for (p = format; *p; p++) {
-        switch (*p) {
+    for (p = format; *p; p++)
+    {
+        switch (*p)
+        {
             case '%':
-                if (!translating) {
+                if (!translating)
+                {
                     translating = 1;
-                } else {
+                } else
+                {
                     if (fputc('%', file) < 0)
                         return EOF;
                     ret++;
@@ -265,59 +287,72 @@ int vprintf(FILE *file, const char *format, va_list args)
                 }
                 break;
             case 'l':
-                if (translating) {
+                if (translating)
+                {
                     from_l = 1;
-                    if (*(p + 1) == 'f') {
+                    if (*(p + 1) == 'f')
+                    {
                         goto f;
                     }
-                } else {
+                } else
+                {
                     if (fputc('l', file) < 0) return EOF;
                     ret++;
                     break;
                 }
             case 'd':
-                if (translating) {
+                if (translating)
+                {
                     char buf[16];
                     translating = 0;
-                    if (from_l) {
+                    if (from_l)
+                    {
                         itoa(va_arg(args, long), buf, 10);
                         from_l = 0;
-                    } else {
+                    } else
+                    {
                         itoa(va_arg(args, int), buf, 10);
                     }
                     if (fputs(buf, file) < 0)
                         return EOF;
                     ret += (int) strlen(buf);
-                } else {
+                } else
+                {
                     if (fputc('d', file) < 0) return EOF;
                     ret++;
                 }
                 break;
             case 's':
-                if (translating) {
+                if (translating)
+                {
                     const char *str = va_arg(args, const char*);
                     translating = 0; // reset state
                     if (fputs(str, file) < 0) return EOF;
                     ret += (int) strlen(str);
-                } else {
+                } else
+                {
                     if (fputc('s', file) < 0) return EOF;
                     ret++;
                 }
                 break;
             case 'f':
             f:
-                if (translating) {
+                if (translating)
+                {
                     char buf[32];
-                    if (from_l) {
+                    if (from_l)
+                    {
                         double_to_string(va_arg(args, double), buf, -1);
-                    } else {
+                    } else
+                    {
                         float_to_string((float) va_arg(args, double), buf, -1);
                     }
                     from_l = 0;
                     translating = 0;
                     if (fputs(buf, file) < 0) return EOF;
                     ret += (int) strlen(buf);
-                } else {
+                } else
+                {
                     if (fputc('f', file) < 0) return EOF;
                     ret++;
                 }

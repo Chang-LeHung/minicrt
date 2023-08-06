@@ -33,18 +33,22 @@ void free(void *ptr)
     if (IS_FREE(header))
         return;
     SET_FREE(header);
-    if (header->prev != NULL && IS_FREE(header->prev)) {
+    if (header->prev != NULL && IS_FREE(header->prev))
+    {
         header->prev->next = header->next;
         header->prev->size += HEAP_SIZE(header);
-        if (header->next != NULL) {
+        if (header->next != NULL)
+        {
             header->next->prev = header->prev;
         }
         header = header->prev;
     }
-    if (header->next != NULL && IS_FREE(header->next)) {
+    if (header->next != NULL && IS_FREE(header->next))
+    {
         header->size += HEAP_SIZE(header->next);
         header->next = header->next->next;
-        if (header->next != NULL) {
+        if (header->next != NULL)
+        {
             header->next->prev = header;
         }
     }
@@ -56,17 +60,21 @@ void *malloc(size_t size)
         return NULL;
     size = ROUND_UP(size);
     heap_header_t *header = heap_start;
-    while (header != NULL) {
+    while (header != NULL)
+    {
 
-        if (IS_USED(header)) {
+        if (IS_USED(header))
+        {
             header = header->next;
             continue;
         }
         if (HEAP_SIZE(header) >= size + head_size &&
-            HEAP_SIZE(header) <= size + head_size * 2) {
+            HEAP_SIZE(header) <= size + head_size * 2)
+        {
             SET_USED(header);
         }
-        if (HEAP_SIZE(header) >= size + head_size * 2) {
+        if (HEAP_SIZE(header) >= size + head_size * 2)
+        {
             heap_header_t *next = (heap_header_t *) ((char *) header + size + head_size);
             next->prev = header;
             next->next = header->next;
