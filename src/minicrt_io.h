@@ -5,7 +5,8 @@
 #include "minicrt.h"
 #include <stdarg.h>
 
-typedef struct {
+typedef struct
+{
     u32 fd;
     u32 pos;
     u32 size;

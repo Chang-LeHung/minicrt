@@ -2,13 +2,15 @@
 #include "minicrt.h"
 
 
-size_t strlen(const char *s) {
+size_t strlen(const char *s)
+{
     size_t i = 0;
     while (s[i]) i++;
     return i;
 }
 
-char *itoa(i64 n, char *str, int radix) {
+char *itoa(i64 n, char *str, int radix)
+{
     static char digits[] = "0123456789abcdefghijklmnopqrstuvwxyz";
     char *p = str;
     char *head = str;
@@ -41,7 +43,8 @@ char *itoa(i64 n, char *str, int radix) {
     return str;
 }
 
-int strcmp(const char *s1, const char *s2) {
+int strcmp(const char *s1, const char *s2)
+{
     while (*s1 && *s1 == *s2) {
         s1++;
         s2++;
@@ -49,7 +52,8 @@ int strcmp(const char *s1, const char *s2) {
     return *(const unsigned char *) s1 - *(const unsigned char *) s2;
 }
 
-char *strcpy(char *dest, const char *src) {
+char *strcpy(char *dest, const char *src)
+{
     char *ret = dest;
     while (*src) {
         *dest++ = *src++;
@@ -58,10 +62,11 @@ char *strcpy(char *dest, const char *src) {
     return ret;
 }
 
-int strcpy_n(char *dest, const char *src, int size) {
+int strcpy_n(char *dest, const char *src, int size)
+{
     int ret = 0;
-    for(int i = 0; i < size; i++) {
-        if(*dest == '\n')
+    for (int i = 0; i < size; i++) {
+        if (*dest == '\n')
             ret = 1;
         *dest++ = *src++;
     }

@@ -1,8 +1,10 @@
 
 #include "minicrt.h"
 
-typedef struct heap_header {
-    union {
+typedef struct heap_header
+{
+    union
+    {
         u32 size;
         u8 used: 1;
     };
@@ -25,7 +27,8 @@ static const int head_size = sizeof(heap_header_t);
 #define HEAP_SIZE(ptr) ((ptr->size) & ~(ALIGN_TO - 1))
 #define ROUND_UP(x) (((x) + (ALIGN_TO - 1)) & ~(ALIGN_TO - 1))
 
-void free(void *ptr) {
+void free(void *ptr)
+{
     heap_header_t *header = REAL_START_FROM_USER_PTR(ptr);
     if (IS_FREE(header))
         return;
@@ -41,13 +44,14 @@ void free(void *ptr) {
     if (header->next != NULL && IS_FREE(header->next)) {
         header->size += HEAP_SIZE(header->next);
         header->next = header->next->next;
-        if(header->next != NULL) {
+        if (header->next != NULL) {
             header->next->prev = header;
         }
     }
 }
 
-void *malloc(size_t size) {
+void *malloc(size_t size)
+{
     if (size <= 0)
         return NULL;
     size = ROUND_UP(size);
@@ -73,7 +77,7 @@ void *malloc(size_t size) {
             SET_USED(header);
             return USER_START_FROM_REAL_PTR(header);
         }
-        if(header->next == NULL)
+        if (header->next == NULL)
             break;
         header = header->next;
     }
@@ -82,9 +86,10 @@ void *malloc(size_t size) {
     return malloc(size);
 }
 
-hidden void mini_crt_init_heap() {
+hidden void mini_crt_init_heap()
+{
     heap_start = (heap_header_t *) sbrk(0);
-    heap_start = (heap_header_t *) ROUND_UP((u64)heap_start);
+    heap_start = (heap_header_t *) ROUND_UP((u64) heap_start);
     base = heap_start;
     end = sbrk((u64) ((char *) base + 4 MB));
 #ifdef TEST

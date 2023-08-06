@@ -2,7 +2,8 @@
 #include "minicrt.h"
 #include <stdarg.h>
 
-typedef struct {
+typedef struct
+{
     u32 fd;
     u32 pos;
     u32 size;
@@ -27,7 +28,8 @@ FILE *stderr;
 
 int fclose(FILE *stream);
 
-hidden void minicrt_init_io() {
+hidden void minicrt_init_io()
+{
     stdin = malloc(sizeof(FILE));
     stdin->fd = 0;
     stdin->size = 128;
@@ -51,14 +53,16 @@ hidden void minicrt_init_io() {
     ADD_WRITE(stderr);
 }
 
-hidden void minicrt_destroy_io() {
+hidden void minicrt_destroy_io()
+{
     fclose(stdout);
     fclose(stderr);
     fclose(stdin);
 }
 
 
-static inline int _fwrite(FILE *stream) {
+static inline int _fwrite(FILE *stream)
+{
     int ret = write((int) stream->fd, stream->buf, stream->pos);
     if (ret >= 0) {
         stream->pos = 0;
@@ -67,7 +71,8 @@ static inline int _fwrite(FILE *stream) {
     return -1;
 }
 
-int fwrite(const void *buf, int size, FILE *stream) {
+int fwrite(const void *buf, int size, FILE *stream)
+{
     if (!CAN_WRITE(stream) || !IS_OPEN(stream)) return -1;
     if (size <= 0) return 0;
     u32 i = size + stream->pos;
@@ -84,7 +89,8 @@ int fwrite(const void *buf, int size, FILE *stream) {
     return 0;
 }
 
-int putn(int n) {
+int putn(int n)
+{
     char buf[16];
     itoa(n, buf, 10);
     puts(buf);
@@ -92,16 +98,19 @@ int putn(int n) {
     return (int) strlen(buf) + 1;
 }
 
-int fputc(char c, FILE *stream) {
+int fputc(char c, FILE *stream)
+{
     return fwrite(&c, 1, stream);
 }
 
-int fputs(const char *buf, FILE *stream) {
+int fputs(const char *buf, FILE *stream)
+{
     u32 size = strlen(buf);
     return fwrite(buf, (int) size, stream);
 }
 
-int fclose(FILE *stream) {
+int fclose(FILE *stream)
+{
     if (stream == NULL || !IS_OPEN(stream)) return -1;
     if (stream->pos != 0)
         _fwrite(stream);
@@ -110,7 +119,8 @@ int fclose(FILE *stream) {
     return 0;
 }
 
-void reverseString(char str[], int length) {
+void reverseString(char str[], int length)
+{
     int start = 0;
     int end = length - 1;
     while (start < end) {
@@ -122,7 +132,8 @@ void reverseString(char str[], int length) {
     }
 }
 
-static int int_to_string(long num, char str[], int precision) {
+static int int_to_string(long num, char str[], int precision)
+{
     int index = 0;
     int isNegative = 0;
 
@@ -149,7 +160,8 @@ static int int_to_string(long num, char str[], int precision) {
     return index;
 }
 
-static void float_to_string(float num, char str[], int precision) {
+static void float_to_string(float num, char str[], int precision)
+{
     // Handle 0.0 case
     if (num == 0) {
         str[0] = '0';
@@ -191,7 +203,8 @@ static void float_to_string(float num, char str[], int precision) {
     str[integerLength + i] = '\0';
 }
 
-static void double_to_string(double num, char str[], int precision) {
+static void double_to_string(double num, char str[], int precision)
+{
     // Handle 0.0 case
     if (num == 0) {
         str[0] = '0';
@@ -233,7 +246,8 @@ static void double_to_string(double num, char str[], int precision) {
     str[integerLength + i] = '\0';
 }
 
-int vprintf(FILE *file, const char *format, va_list args) {
+int vprintf(FILE *file, const char *format, va_list args)
+{
     int translating = 0;
     char from_l = 0;
     int ret = 0;
@@ -319,7 +333,8 @@ int vprintf(FILE *file, const char *format, va_list args) {
 }
 
 // just for rsp rbp align to 16 for using sse instructions
-__attribute__((force_align_arg_pointer)) int printf(const char *restrict format, ...) {
+__attribute__((force_align_arg_pointer)) int printf(const char *restrict format, ...)
+{
     int ret;
     va_list args;
     va_start(args, format);

@@ -1,7 +1,8 @@
 
 #include "minicrt.h"
 
-size_t write(int fd, const char *buffer, size_t len) {
+size_t write(int fd, const char *buffer, size_t len)
+{
     // be careful with return val type, which is size_t
     // otherwise, return val will update partial last stack rbp
     // pushed on current stack

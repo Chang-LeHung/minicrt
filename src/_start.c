@@ -1,7 +1,8 @@
 
 #include "minicrt.h"
 
-static int dummy(int argc, char **argv, char **envp) {
+static int dummy(int argc, char **argv, char **envp)
+{
     puts(RED "Default main(dummy) function, please preprae your own main function\n" RESET);
     return 0;
 }
@@ -9,8 +10,10 @@ static int dummy(int argc, char **argv, char **envp) {
 weak_alias(dummy, main);
 
 static void minicrt_init(int, char **, char **);
+
 // this is the entry point of the program
-void _start() {
+void _start()
+{
     // push %rbp        rsp will be decreased by 8
     // movq %rsp, %rbp
     // so argc position is %rbp
@@ -29,7 +32,8 @@ void _start() {
     minicrt_init(argc, argv, envp);
 }
 
-static void minicrt_init(int argc, char **argv, char **envp) {
+static void minicrt_init(int argc, char **argv, char **envp)
+{
 //    minicrt_init_stage2(argc, argv, envp);
     mini_crt_init_heap();
     minicrt_init_io();
