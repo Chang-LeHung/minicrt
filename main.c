@@ -20,8 +20,8 @@ int main(int argc, char** argv, char** envp) {
     buf[4] = '\n';
     buf[5] = '\0';
     puts(buf);
-    printf("%s %d\n", "huchang", 18);
-    printf("%f\n", 12.2);
+    printf("%s %d\n", "\nhuchang", 18);
+    printf("%f \t %lf\t%d\n", 12.2, 12123.12312312312321321, 2123234);
 //    float data = 3.14f;
 //    printf("%lf\n", data);
     return 0;

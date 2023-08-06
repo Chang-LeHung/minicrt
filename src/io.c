@@ -307,6 +307,7 @@ int vprintf(FILE *file, const char *format, va_list args) {
                     if (fputc('f', file) < 0) return EOF;
                     ret++;
                 }
+                p++;
                 break;
             default:
                 translating = 0;
