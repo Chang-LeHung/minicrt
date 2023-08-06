@@ -5,6 +5,14 @@
 
 // content below come from musl1.2.4 syscall_arch.h
 
+static __inline long __syscall(long n)
+{
+    unsigned long ret;
+    __asm__ __volatile__ ("syscall" : "=a"(ret) : "a"(n) : "rcx", "r11", "memory");
+    return ret;
+}
+
+
 static __inline long __syscall0(long n)
 {
     unsigned long ret;
