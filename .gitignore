@@ -6,3 +6,4 @@ main
 CMakeLists.txt
 *.cpp
 .vscode
+demo
