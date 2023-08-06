@@ -110,8 +110,132 @@ int fclose(FILE *stream) {
     return 0;
 }
 
+void reverseString(char str[], int length) {
+    int start = 0;
+    int end = length - 1;
+    while (start < end) {
+        char temp = str[start];
+        str[start] = str[end];
+        str[end] = temp;
+        start++;
+        end--;
+    }
+}
+
+static int int_to_string(long num, char str[], int precision) {
+    int index = 0;
+    int isNegative = 0;
+
+    // Handle negative numbers
+    if (num < 0) {
+        isNegative = 1;
+        num = -num;
+    }
+
+    // Convert integer part to string
+    while (num != 0) {
+        str[index++] = num % 10 + '0';
+        num /= 10;
+    }
+
+    // Add a negative sign if necessary
+    if (isNegative) {
+        str[index++] = '-';
+    }
+
+    // Reverse the string
+    reverseString(str, index);
+
+    return index;
+}
+
+static void float_to_string(float num, char str[], int precision) {
+    // Handle 0.0 case
+    if (num == 0) {
+        str[0] = '0';
+        str[1] = '\0';
+        return;
+    }
+
+    // Extract the integer part
+    int integerPart = (int) num;
+
+    // Convert the integer part to a string
+    int integerLength = int_to_string(integerPart, str, precision);
+
+    // Append decimal point
+    str[integerLength++] = '.';
+
+    // Extract the decimal part
+    double decimalPart = num - integerPart;
+
+    // Convert the decimal part to a string
+    int i = 0;
+    if (precision == -1) {
+        while (1) {
+            decimalPart *= 10;
+            int digit = (int) decimalPart;
+            str[integerLength + i++] = digit + '0';
+            if (!digit) break;
+            decimalPart -= digit;
+        }
+    } else {
+        while (i < precision) {
+            decimalPart *= 10;
+            int digit = (int) decimalPart;
+            str[integerLength + i++] = digit + '0';
+            decimalPart -= digit;
+        }
+    }
+    // Null-terminate the string
+    str[integerLength + i] = '\0';
+}
+
+static void double_to_string(double num, char str[], int precision) {
+    // Handle 0.0 case
+    if (num == 0) {
+        str[0] = '0';
+        str[1] = '\0';
+        return;
+    }
+
+    // Extract the integer part
+    int integerPart = (int) num;
+
+    // Convert the integer part to a string
+    int integerLength = int_to_string(integerPart, str, precision);
+
+    // Append decimal point
+    str[integerLength++] = '.';
+
+    // Extract the decimal part
+    double decimalPart = num - integerPart;
+
+    // Convert the decimal part to a string
+    int i = 0;
+    if (precision == -1) {
+        while (1) {
+            decimalPart *= 10;
+            int digit = (int) decimalPart;
+            str[integerLength + i++] = digit + '0';
+            if (!digit) break;
+            decimalPart -= digit;
+        }
+    } else {
+        while (i < precision) {
+            decimalPart *= 10;
+            int digit = (int) decimalPart;
+            str[integerLength + i++] = digit + '0';
+            decimalPart -= digit;
+        }
+    }
+    // Null-terminate the string
+    str[integerLength + i] = '\0';
+}
+
 int vprintf(FILE *file, const char *format, va_list args) {
     int translating = 0;
+    char from_l = 0;
     int ret = 0;
     const char *p = NULL;
     for (p = format; *p; p++) {
@@ -126,11 +250,27 @@ int vprintf(FILE *file, const char *format, va_list args) {
                     translating = 0;
                 }
                 break;
+            case 'l':
+                if (translating) {
+                    from_l = 1;
+                    if (*(p + 1) == 'f') {
+                        goto f;
+                    }
+                } else {
+                    if (fputc('l', file) < 0) return EOF;
+                    ret++;
+                    break;
+                }
             case 'd':
                 if (translating) {
                     char buf[16];
                     translating = 0;
-                    itoa(va_arg(args, int), buf, 10);
+                    if (from_l) {
+                        itoa(va_arg(args, long), buf, 10);
+                        from_l = 0;
+                    } else {
+                        itoa(va_arg(args, int), buf, 10);
+                    }
                     if (fputs(buf, file) < 0)
                         return EOF;
                     ret += (int) strlen(buf);
@@ -150,6 +290,24 @@ int vprintf(FILE *file, const char *format, va_list args) {
                     ret++;
                 }
                 break;
+            case 'f':
+            f:
+                if (translating) {
+                    char buf[32];
+                    if (from_l) {
+                        double_to_string(va_arg(args, double), buf, -1);
+                    } else {
+                        float_to_string((float) va_arg(args, double), buf, -1);
+                    }
+                    from_l = 0;
+                    translating = 0;
+                    if (fputs(buf, file) < 0) return EOF;
+                    ret += (int) strlen(buf);
+                } else {
+                    if (fputc('f', file) < 0) return EOF;
+                    ret++;
+                }
+                break;
             default:
                 translating = 0;
                 if (fputc(*p, file) < 0) return EOF;
@@ -159,9 +317,12 @@ int vprintf(FILE *file, const char *format, va_list args) {
     return ret;
 }
 
-int printf(const char *format, ...) {
+// just for rsp rbp align to 16 for using sse instructions
+__attribute__((force_align_arg_pointer)) int printf(const char *restrict format, ...) {
+    int ret;
     va_list args;
     va_start(args, format);
-    vprintf(stdout, format, args);
-    return 0;
+    ret = vprintf(stdout, format, args);
+    va_end(args);
+    return ret;
 }

@@ -20,7 +20,9 @@ int main(int argc, char** argv, char** envp) {
     buf[4] = '\n';
     buf[5] = '\0';
     puts(buf);
-    char *s = "\nhello world from %s whose age is %d\n";
-    printf(s, "huchang", 19);
+    printf("%s %d\n", "huchang", 18);
+    printf("%f\n", 12.2);
+//    float data = 3.14f;
+//    printf("%lf\n", data);
     return 0;
 }

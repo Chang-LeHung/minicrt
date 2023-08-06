@@ -22,6 +22,11 @@ char *itoa(i64 n, char *str, int radix) {
         *p = '\0';
         return p;
     }
+    if (n < 0) {
+        n = -n;
+        *p++ = '-';
+        head++;
+    }
     while (n) {
         int rem = n % radix;
         *p++ = digits[rem];
