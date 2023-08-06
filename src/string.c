@@ -53,8 +53,12 @@ char *strcpy(char *dest, const char *src) {
     return ret;
 }
 
-void strcpy_n(char *dest, const char *src, int size) {
+int strcpy_n(char *dest, const char *src, int size) {
+    int ret = 0;
     for(int i = 0; i < size; i++) {
+        if(*dest == '\n')
+            ret = 1;
         *dest++ = *src++;
     }
+    return ret;
 }

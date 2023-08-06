@@ -32,7 +32,8 @@ void _start() {
 static void minicrt_init(int argc, char **argv, char **envp) {
 //    minicrt_init_stage2(argc, argv, envp);
     mini_crt_init_heap();
-    _exit(main(argc, argv, envp));
+    minicrt_init_io();
+    exit(main(argc, argv, envp));
 }
 
 // rsp 指向 initial stack frame 的低地址的原因是因为后面进行函数调用的时候可以读写内存了

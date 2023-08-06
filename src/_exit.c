@@ -1,5 +1,6 @@
 #include <sys/syscall.h>
 #include "minicrt.h"
+#include "minicrt_io.h"
 
 void _exit(int status) {
     __asm__ __volatile__(
@@ -10,4 +11,9 @@ void _exit(int status) {
         :: "r"((long)status), "r"((long)SYS_exit)
         : "rdi", "rax", kernel_destroy_regs
         );
+}
+
+void exit(int status) {
+    minicrt_destroy_io();
+    _exit(status);
 }

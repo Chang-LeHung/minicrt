@@ -1,7 +1,7 @@
 
 SRCS := $(wildcard src/*.c)
 OBJS := $(patsubst %.c,%.o,$(SRCS))
-CFLAGS := -c -fno-stack-protector -nostdlib -fno-builtin -Wno-unused-variable -Wall -Werror
+CFLAGS := -g -c -fno-stack-protector -nostdlib -fno-builtin -Wno-unused-variable -Wall -Werror
 CC := gcc
 lib: $(OBJS)
 	ld -static -e _start $(OBJS) -o std

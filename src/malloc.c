@@ -1,5 +1,6 @@
 
 #include "minicrt.h"
+#include "minicrt_io.h"
 
 typedef struct heap_header {
     union {
@@ -41,7 +42,9 @@ void free(void *ptr) {
     if (header->next != NULL && IS_FREE(header->next)) {
         header->size += HEAP_SIZE(header->next);
         header->next = header->next->next;
-        header->next->prev = header;
+        if(header->next != NULL) {
+            header->next->prev = header;
+        }
     }
 }
 
@@ -49,6 +52,7 @@ void *malloc(size_t size) {
     if (size <= 0)
         return NULL;
     size = ROUND_UP(size);
+    putn(size);
     heap_header_t *header = heap_start;
     while (header != NULL) {
 
@@ -69,7 +73,7 @@ void *malloc(size_t size) {
             header->next = next;
             header->size = size + head_size;
             SET_USED(header);
-            return USER_START_FROM_REAL_PTR(next);
+            return USER_START_FROM_REAL_PTR(header);
         }
         if(header->next == NULL)
             break;

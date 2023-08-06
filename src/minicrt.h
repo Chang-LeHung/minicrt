@@ -26,7 +26,11 @@ int putchar(char c);
 
 size_t strlen(const char *s);
 
+void exit(int status);
+
 int puts(const char *s);
+
+hidden void minicrt_init_io();
 
 char *itoa(i64, char *, int);
 
@@ -38,13 +42,14 @@ void free(void *);
 
 void *malloc(size_t);
 
-void strcpy_n(char *, const char *, int);
+int strcpy_n(char *, const char *, int);
 
 hidden void *sbrk(u64);
 
 hidden void mini_crt_init_heap();
 
 #define kernel_destroy_regs "rcx", "r11", "memory"
+
 #define STDIN 0
 #define STDOUT 1
 #define STDERR 2
