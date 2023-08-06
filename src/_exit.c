@@ -13,7 +13,7 @@ void _exit(int status)
 //        ::"r"((long) status), "r"((long) SYS_exit)
 //        : "rdi", "rax", kernel_destroy_regs
 //        );
-    __syscall1(SYS_exit, 0);
+    __syscall1(SYS_exit, status);
 }
 
 void exit(int status)
