@@ -16,6 +16,21 @@ void _exit(int status)
     __syscall1(SYS_exit, status);
 }
 
+void _exit_group(int status)
+{
+    __syscall1(SYS_exit_group, status);
+}
+
+void abort(void)
+{
+    _exit(127);
+}
+
+void _Exit(int status)
+{
+    _exit(status);
+}
+
 void exit(int status)
 {
     minicrt_destroy_io();
